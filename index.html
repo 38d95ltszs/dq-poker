@@ -276,21 +276,30 @@ function evaluateHand(cards) {
   const allSameSuit = suits.length > 0 && suits.every(s => s === suits[0]);
   const commonSuit = allSameSuit ? suits[0] : null;
   const flushPossible = allSameSuit || real.length === 0;
-  let straightPossible = false;
-  if (jokerCount === 0) {
-    straightPossible = distinctRanks.length === 5 && distinctRanks[4] - distinctRanks[0] === 4;
-  } else if (jokerCount === 1) {
-    if (distinctRanks.length === 4) {
-      const span = distinctRanks[3] - distinctRanks[0];
-      if (span === 3) straightPossible = true;else if (span === 4) {
+  function checkStraight(sortedDistinct, jCount) {
+    if (jCount === 0) {
+      return sortedDistinct.length === 5 && sortedDistinct[4] - sortedDistinct[0] === 4;
+    } else if (jCount === 1) {
+      if (sortedDistinct.length !== 4) return false;
+      const span = sortedDistinct[3] - sortedDistinct[0];
+      if (span === 3) return true;
+      if (span === 4) {
         let gapCount = 0;
         for (let i = 0; i < 3; i++) {
-          const diff = distinctRanks[i + 1] - distinctRanks[i];
+          const diff = sortedDistinct[i + 1] - sortedDistinct[i];
           if (diff === 2) gapCount++;else if (diff !== 1) gapCount = 99;
         }
-        straightPossible = gapCount === 1;
+        return gapCount === 1;
       }
+      return false;
     }
+    return false;
+  }
+  let straightPossible = checkStraight(distinctRanks, jokerCount);
+  if (!straightPossible && distinctRanks.includes(14)) {
+    // A-2-3-4-5(ホイール)にも対応: Aを1として再判定
+    const aceLow = [...new Set(distinctRanks.map(r => r === 14 ? 1 : r))].sort((a, b) => a - b);
+    straightPossible = checkStraight(aceLow, jokerCount);
   }
   const isRoyalRanks = (() => {
     const royal = [10, 11, 12, 13, 14];
