@@ -75,6 +75,7 @@ button{font-family:inherit;cursor:pointer;background:none;}
 .cursor-pointer{cursor:pointer;}
 .disabled\:opacity-40:disabled{opacity:.4;}
 .hover\:bg-white\/10:hover{background-color:rgba(255,255,255,.1);}
+.hover\:bg-black\/10:hover{background-color:rgba(0,0,0,.08);}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
 .animate-pulse{animation:pulse 1.5s cubic-bezier(0.4,0,0.6,1) infinite;}
 
@@ -322,18 +323,20 @@ function evaluateHand(cards) {
 /* ============ DQ風UIパーツ ============ */
 function DQBox({
   children,
-  className = ""
+  className = "",
+  style = {}
 }) {
   return /*#__PURE__*/React.createElement("div", {
     className: `relative ${className}`,
     style: {
-      background: "linear-gradient(180deg,#1c2f7a 0%,#12205c 100%)",
-      border: "3px solid #f4f0e0",
-      boxShadow: "0 0 0 2px #12205c, 0 4px 12px rgba(0,0,0,0.5)",
+      background: "#0a0a0a",
+      border: "3px solid #fdfdfb",
+      boxShadow: "inset 0 0 0 2px #0a0a0a, inset 0 0 0 3px #fdfdfb, 0 4px 10px rgba(0,0,0,0.6)",
       borderRadius: "2px",
       padding: "14px 18px",
-      color: "#f4f0e0",
-      fontFamily: "'Courier New', monospace"
+      color: "#fdfdfb",
+      fontFamily: "'Courier New', monospace",
+      ...style
     }
   }, children);
 }
@@ -341,7 +344,7 @@ function Cursor() {
   return /*#__PURE__*/React.createElement("span", {
     className: "inline-block animate-pulse mr-1",
     style: {
-      color: "#e0b93e"
+      color: "#fdfdfb"
     }
   }, "\u25B6");
 }
@@ -534,7 +537,7 @@ function DQPoker() {
     className: "flex items-center gap-2"
   }, /*#__PURE__*/React.createElement(CoinsIcon, {
     size: 20,
-    color: "#f4d97e"
+    color: "#fdfdfb"
   }), /*#__PURE__*/React.createElement("span", {
     className: "font-bold text-lg"
   }, coins.toLocaleString()), /*#__PURE__*/React.createElement("span", {
@@ -582,31 +585,38 @@ function DQPoker() {
     }
   }, "?"))), /*#__PURE__*/React.createElement("span", {
     className: "text-yellow-300 font-bold"
-  }, "\u7372\u5F97\u4E88\u5B9A\uFF1A", winnings.toLocaleString(), "\u679A")), /*#__PURE__*/React.createElement(DQBox, null, phase === "bet" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }, "\u7372\u5F97\u4E88\u5B9A\uFF1A", winnings.toLocaleString(), "\u679A")), /*#__PURE__*/React.createElement(DQBox, {
+    style: {
+      minHeight: 150,
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center"
+    }
+  }, phase === "bet" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "flex items-center justify-center gap-3 mb-3"
   }, /*#__PURE__*/React.createElement("button", {
     onClick: () => adjustBet(-100),
-    className: "px-2 py-1 border border-[#f4f0e0] rounded hover:bg-white/10 flex items-center"
+    className: "px-2 py-1 border border-[#fdfdfb] rounded hover:bg-white/10 flex items-center"
   }, /*#__PURE__*/React.createElement(ChevronDownIcon, {
     size: 16
   }), "100"), /*#__PURE__*/React.createElement("button", {
     onClick: () => adjustBet(-10),
-    className: "px-2 py-1 border border-[#f4f0e0] rounded hover:bg-white/10 flex items-center"
+    className: "px-2 py-1 border border-[#fdfdfb] rounded hover:bg-white/10 flex items-center"
   }, /*#__PURE__*/React.createElement(ChevronDownIcon, {
     size: 16
   }), "10"), /*#__PURE__*/React.createElement("div", {
     className: "px-4 py-1 font-bold text-lg min-w-[90px] text-center",
     style: {
-      color: "#f4d97e"
+      color: "#fdfdfb"
     }
   }, bet, "\u679A"), /*#__PURE__*/React.createElement("button", {
     onClick: () => adjustBet(10),
-    className: "px-2 py-1 border border-[#f4f0e0] rounded hover:bg-white/10 flex items-center"
+    className: "px-2 py-1 border border-[#fdfdfb] rounded hover:bg-white/10 flex items-center"
   }, /*#__PURE__*/React.createElement(ChevronUpIcon, {
     size: 16
   }), "10"), /*#__PURE__*/React.createElement("button", {
     onClick: () => adjustBet(100),
-    className: "px-2 py-1 border border-[#f4f0e0] rounded hover:bg-white/10 flex items-center"
+    className: "px-2 py-1 border border-[#fdfdfb] rounded hover:bg-white/10 flex items-center"
   }, /*#__PURE__*/React.createElement(ChevronUpIcon, {
     size: 16
   }), "100")), /*#__PURE__*/React.createElement("div", {
@@ -701,7 +711,8 @@ function DQPoker() {
     className: "flex justify-between"
   }, /*#__PURE__*/React.createElement("span", null, h.label), /*#__PURE__*/React.createElement("span", {
     style: {
-      color: "#f4d97e"
+      color: "#fdfdfb",
+      fontWeight: "bold"
     }
   }, h.mult, "\u500D"))))))));
 }
