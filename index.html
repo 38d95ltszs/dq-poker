@@ -47,6 +47,10 @@ button{font-family:inherit;cursor:pointer;background:none;color:inherit;}
 .h-24{height:6rem;}
 .h-28{height:7rem;}
 .min-h-screen{min-height:100vh;}
+@supports (min-height: 100dvh){
+  .min-h-screen{min-height:100dvh;}
+}
+.core-game-panel{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;min-height:0;}
 .min-h-\[70px\]{min-height:70px;}
 .min-w-\[90px\]{min-width:90px;}
 .max-w-xl{max-width:36rem;margin-left:auto;margin-right:auto;}
@@ -603,14 +607,14 @@ function DQPoker() {
     setMessage("ベットしてください");
   };
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "min-h-screen w-full flex justify-center p-4",
+    className: "min-h-screen w-full flex flex-col items-center p-4",
     style: {
       background: "radial-gradient(ellipse at top, #1a2050 0%, #05061a 70%)",
       fontFamily: "'Courier New', monospace",
       paddingBottom: "20px"
     }
   }, /*#__PURE__*/React.createElement("div", {
-    className: "w-full max-w-xl"
+    className: "w-full max-w-xl core-game-panel"
   }, /*#__PURE__*/React.createElement("div", {
     className: "block-title-wrap"
   }, /*#__PURE__*/React.createElement(BlockLogo, {
@@ -637,8 +641,13 @@ function DQPoker() {
     className: "mb-4 min-h-[70px] flex items-center"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-sm md:text-base leading-relaxed"
-  }, /*#__PURE__*/React.createElement(Cursor, null), message)), phase !== "doubleup" && phase !== "doneDouble" && /*#__PURE__*/React.createElement("div", {
-    className: "flex justify-center gap-2 mb-4 flex-wrap"
+  }, /*#__PURE__*/React.createElement(Cursor, null), message)), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col items-center justify-center mb-4",
+    style: {
+      minHeight: 170
+    }
+  }, phase !== "doubleup" && phase !== "doneDouble" && /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-center gap-2 flex-wrap"
   }, (phase === "deal" || phase === "result" ? hand : [null, null, null, null, null]).map((c, i) => /*#__PURE__*/React.createElement(CardView, {
     key: i,
     card: c,
@@ -646,7 +655,7 @@ function DQPoker() {
     dim: false,
     onToggle: () => phase === "deal" && toggleHold(i)
   }))), (phase === "doubleup" || phase === "doneDouble") && /*#__PURE__*/React.createElement("div", {
-    className: "flex flex-col items-center mb-4"
+    className: "flex flex-col items-center"
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex items-center gap-3 mb-2"
   }, /*#__PURE__*/React.createElement("div", {
@@ -674,7 +683,7 @@ function DQPoker() {
     }
   }, "?"))), /*#__PURE__*/React.createElement("span", {
     className: "text-yellow-300 font-bold"
-  }, "\u7372\u5F97\u4E88\u5B9A\uFF1A", winnings.toLocaleString(), "\u679A")), /*#__PURE__*/React.createElement(DQBox, {
+  }, "\u7372\u5F97\u4E88\u5B9A\uFF1A", winnings.toLocaleString(), "\u679A"))), /*#__PURE__*/React.createElement(DQBox, {
     className: "mb-4",
     style: {
       minHeight: 150,
@@ -785,9 +794,9 @@ function DQPoker() {
       background: "#e0b93e",
       color: "#12205c"
     }
-  }, /*#__PURE__*/React.createElement(Cursor, null), "\u3082\u3046\u4E00\u5EA6"))), /*#__PURE__*/React.createElement("details", {
-    className: "mt-2"
-  }, /*#__PURE__*/React.createElement("summary", {
+  }, /*#__PURE__*/React.createElement(Cursor, null), "\u3082\u3046\u4E00\u5EA6")))), /*#__PURE__*/React.createElement("div", {
+    className: "w-full max-w-xl mt-4"
+  }, /*#__PURE__*/React.createElement("details", null, /*#__PURE__*/React.createElement("summary", {
     className: "text-center text-xs cursor-pointer",
     style: {
       color: "#8a8ac0"
