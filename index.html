@@ -561,9 +561,9 @@ function DQPoker() {
     className: "mb-4 min-h-[70px] flex items-center"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-sm md:text-base leading-relaxed"
-  }, /*#__PURE__*/React.createElement(Cursor, null), message)), (phase === "deal" || phase === "result") && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Cursor, null), message)), /*#__PURE__*/React.createElement("div", {
     className: "flex justify-center gap-2 mb-4 flex-wrap"
-  }, hand.map((c, i) => /*#__PURE__*/React.createElement(CardView, {
+  }, (phase === "deal" || phase === "result" ? hand : [null, null, null, null, null]).map((c, i) => /*#__PURE__*/React.createElement(CardView, {
     key: i,
     card: c,
     held: held[i],
