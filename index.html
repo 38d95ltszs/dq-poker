@@ -9,7 +9,9 @@
 <style>
 html,body{margin:0;padding:0;background:#05061a;font-family:'Courier New',monospace;}
 *{box-sizing:border-box;}
-button{font-family:inherit;cursor:pointer;background:none;}
+button{font-family:inherit;cursor:pointer;background:none;color:inherit;}
+.footer-bar{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;padding:14px 16px;background:linear-gradient(to top, rgba(5,6,26,0.97) 55%, rgba(5,6,26,0));z-index:50;pointer-events:none;}
+.footer-bar-inner{width:100%;max-width:36rem;pointer-events:auto;}
 .relative{position:relative;}
 .absolute{position:absolute;}
 .flex{display:flex;}
@@ -517,11 +519,12 @@ function DQPoker() {
     setPhase("bet");
     setMessage("つぎはどれくらい賭ける？");
   };
-  return /*#__PURE__*/React.createElement("div", {
-    className: "min-h-screen w-full flex items-center justify-center p-4",
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "min-h-screen w-full flex justify-center p-4",
     style: {
       background: "radial-gradient(ellipse at top, #1a2050 0%, #05061a 70%)",
-      fontFamily: "'Courier New', monospace"
+      fontFamily: "'Courier New', monospace",
+      paddingBottom: "190px"
     }
   }, /*#__PURE__*/React.createElement("div", {
     className: "w-full max-w-xl"
@@ -585,7 +588,30 @@ function DQPoker() {
     }
   }, "?"))), /*#__PURE__*/React.createElement("span", {
     className: "text-yellow-300 font-bold"
-  }, "\u7372\u5F97\u4E88\u5B9A\uFF1A", winnings.toLocaleString(), "\u679A")), /*#__PURE__*/React.createElement(DQBox, {
+  }, "\u7372\u5F97\u4E88\u5B9A\uFF1A", winnings.toLocaleString(), "\u679A")), /*#__PURE__*/React.createElement("details", {
+    className: "mt-4"
+  }, /*#__PURE__*/React.createElement("summary", {
+    className: "text-center text-xs cursor-pointer",
+    style: {
+      color: "#8a8ac0"
+    }
+  }, "\u5F79\u4E00\u89A7\u3092\u898B\u308B"), /*#__PURE__*/React.createElement(DQBox, {
+    className: "mt-2 text-xs"
+  }, /*#__PURE__*/React.createElement("ul", {
+    className: "grid grid-cols-2 gap-x-4 gap-y-1"
+  }, HANDS.filter(h => h.key !== "none").map(h => /*#__PURE__*/React.createElement("li", {
+    key: h.key,
+    className: "flex justify-between"
+  }, /*#__PURE__*/React.createElement("span", null, h.label), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "#fdfdfb",
+      fontWeight: "bold"
+    }
+  }, h.mult, "\u500D")))))))), /*#__PURE__*/React.createElement("div", {
+    className: "footer-bar"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "footer-bar-inner"
+  }, /*#__PURE__*/React.createElement(DQBox, {
     style: {
       minHeight: 150,
       display: "flex",
@@ -695,26 +721,7 @@ function DQPoker() {
       background: "#e0b93e",
       color: "#12205c"
     }
-  }, /*#__PURE__*/React.createElement(Cursor, null), "\u3064\u304E\u3078"))), /*#__PURE__*/React.createElement("details", {
-    className: "mt-4"
-  }, /*#__PURE__*/React.createElement("summary", {
-    className: "text-center text-xs cursor-pointer",
-    style: {
-      color: "#8a8ac0"
-    }
-  }, "\u5F79\u4E00\u89A7\u3092\u898B\u308B"), /*#__PURE__*/React.createElement(DQBox, {
-    className: "mt-2 text-xs"
-  }, /*#__PURE__*/React.createElement("ul", {
-    className: "grid grid-cols-2 gap-x-4 gap-y-1"
-  }, HANDS.filter(h => h.key !== "none").map(h => /*#__PURE__*/React.createElement("li", {
-    key: h.key,
-    className: "flex justify-between"
-  }, /*#__PURE__*/React.createElement("span", null, h.label), /*#__PURE__*/React.createElement("span", {
-    style: {
-      color: "#fdfdfb",
-      fontWeight: "bold"
-    }
-  }, h.mult, "\u500D"))))))));
+  }, /*#__PURE__*/React.createElement(Cursor, null), "\u3064\u304E\u3078"))))));
 }
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(/*#__PURE__*/React.createElement(DQPoker, null));
