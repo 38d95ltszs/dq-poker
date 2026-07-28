@@ -491,7 +491,7 @@ function DQPoker() {
   const [deck, setDeck] = useState([]);
   const [hand, setHand] = useState([]);
   const [held, setHeld] = useState([false, false, false, false, false]);
-  const [message, setMessage] = useState("コインを賭けてゲームを開始しよう！");
+  const [message, setMessage] = useState("ベットしてください");
   const [resultKey, setResultKey] = useState(null);
   const [winnings, setWinnings] = useState(0);
   const [duCurrent, setDuCurrent] = useState(null);
@@ -583,7 +583,7 @@ function DQPoker() {
         setMessage(`的中！（${rankLabel(next)}）獲得${newWin}枚。続ける？やめておく？`);
       } else {
         setWinnings(0);
-        setMessage(`残念、外れ……（${rankLabel(next)}）コインは没収された。`);
+        setMessage("ざんねんでした");
         setPhase("doneDouble");
       }
       setDuBusy(false);
