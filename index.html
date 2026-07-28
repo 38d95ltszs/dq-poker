@@ -4,53 +4,203 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>カジノポーカー - DQ風</title>
-<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
 <style>
-  html, body { margin:0; padding:0; background:#05061a; }
-  * { box-sizing: border-box; }
+html,body{margin:0;padding:0;background:#05061a;font-family:'Courier New',monospace;}
+*{box-sizing:border-box;}
+button{font-family:inherit;cursor:pointer;background:none;}
+.relative{position:relative;}
+.absolute{position:absolute;}
+.flex{display:flex;}
+.inline-block{display:inline-block;}
+.grid{display:grid;}
+.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr));}
+.flex-col{flex-direction:column;}
+.flex-wrap{flex-wrap:wrap;}
+.items-center{align-items:center;}
+.justify-center{justify-content:center;}
+.justify-between{justify-content:space-between;}
+.text-center{text-align:center;}
+.gap-2{gap:.5rem;}
+.gap-3{gap:.75rem;}
+.gap-x-4{column-gap:1rem;}
+.gap-y-1{row-gap:.25rem;}
+.mb-2{margin-bottom:.5rem;}
+.mb-3{margin-bottom:.75rem;}
+.mb-4{margin-bottom:1rem;}
+.mt-1{margin-top:.25rem;}
+.mt-2{margin-top:.5rem;}
+.mt-4{margin-top:1rem;}
+.mr-1{margin-right:.25rem;}
+.-top-3{top:-.75rem;}
+.p-4{padding:1rem;}
+.px-2{padding-left:.5rem;padding-right:.5rem;}
+.px-4{padding-left:1rem;padding-right:1rem;}
+.px-5{padding-left:1.25rem;padding-right:1.25rem;}
+.px-6{padding-left:1.5rem;padding-right:1.5rem;}
+.py-1{padding-top:.25rem;padding-bottom:.25rem;}
+.py-2{padding-top:.5rem;padding-bottom:.5rem;}
+.w-16{width:4rem;}
+.w-20{width:5rem;}
+.w-full{width:100%;}
+.h-24{height:6rem;}
+.h-28{height:7rem;}
+.min-h-screen{min-height:100vh;}
+.min-h-\[70px\]{min-height:70px;}
+.min-w-\[90px\]{min-width:90px;}
+.max-w-xl{max-width:36rem;margin-left:auto;margin-right:auto;}
+.rounded{border-radius:.25rem;}
+.rounded-md{border-radius:.375rem;}
+.border{border-width:1px;border-style:solid;}
+.border-4{border-width:4px;border-style:solid;}
+.border-dashed{border-style:dashed;}
+.border-\[\#f4f0e0\]{border-color:#f4f0e0;}
+.border-\[\#6b5a8f\]{border-color:#6b5a8f;}
+.bg-\[\#f4f0e0\]{background-color:#f4f0e0;}
+.bg-\[\#2a2a4a\]{background-color:#2a2a4a;}
+.text-xs{font-size:.75rem;}
+.text-sm{font-size:.875rem;}
+.text-lg{font-size:1.125rem;}
+.text-2xl{font-size:1.5rem;}
+.text-3xl{font-size:1.875rem;}
+.text-\[10px\]{font-size:10px;}
+.font-bold{font-weight:700;}
+.leading-relaxed{line-height:1.625;}
+.tracking-wider{letter-spacing:.05em;}
+.opacity-80{opacity:.8;}
+.text-yellow-300{color:#fde047;}
+.text-yellow-600{color:#ca8a04;}
+.transition-transform{transition:transform .15s ease;}
+.cursor-pointer{cursor:pointer;}
+.disabled\:opacity-40:disabled{opacity:.4;}
+.hover\:bg-white\/10:hover{background-color:rgba(255,255,255,.1);}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.animate-pulse{animation:pulse 1.5s cubic-bezier(0.4,0,0.6,1) infinite;}
+
+@media (min-width:768px){
+  .md\:w-20{width:5rem;}
+  .md\:h-28{height:7rem;}
+  .md\:text-xl{font-size:1.25rem;}
+  .md\:text-base{font-size:1rem;}
+  .md\:text-3xl{font-size:1.875rem;}
+}
 </style>
 </head>
 <body>
 <div id="root"></div>
-
-<script type="text/babel" data-presets="react">
-const { useState } = React;
+<script>
+const {
+  useState
+} = React;
 
 /* ============ シンプルSVGアイコン(lucide非依存) ============ */
-const Icon = ({ children, size = 20, color = "currentColor" }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    {children}
-  </svg>
-);
-const CrownIcon = (p) => <Icon {...p}><path d="M3 17l2-9 5 5 2-7 2 7 5-5 2 9z"/><path d="M4 20h16"/></Icon>;
-const SwordIcon = (p) => <Icon {...p}><path d="M5 19l6-6"/><path d="M9 9l7-7 4 4-7 7"/><path d="M13 13l4 4-2 2-4-4"/><path d="M5 19l-2 2"/></Icon>;
-const ShieldIcon = (p) => <Icon {...p}><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></Icon>;
-const DropletIcon = (p) => <Icon {...p}><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></Icon>;
-const GhostIcon = (p) => <Icon {...p}><path d="M5 20V11a7 7 0 0 1 14 0v9l-2-2-2 2-2-2-2 2-2-2z"/><circle cx="9.5" cy="10.5" r="0.8" fill={p.color||"currentColor"}/><circle cx="14.5" cy="10.5" r="0.8" fill={p.color||"currentColor"}/></Icon>;
-const CoinsIcon = (p) => <Icon {...p}><circle cx="9" cy="9" r="6"/><path d="M14.5 5.5A6 6 0 1 1 9 15"/></Icon>;
-const ChevronUpIcon = (p) => <Icon {...p}><path d="M6 15l6-6 6 6"/></Icon>;
-const ChevronDownIcon = (p) => <Icon {...p}><path d="M6 9l6 6 6-6"/></Icon>;
+const Icon = ({
+  children,
+  size = 20,
+  color = "currentColor"
+}) => /*#__PURE__*/React.createElement("svg", {
+  width: size,
+  height: size,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: color,
+  strokeWidth: "2",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}, children);
+const CrownIcon = p => /*#__PURE__*/React.createElement(Icon, p, /*#__PURE__*/React.createElement("path", {
+  d: "M3 17l2-9 5 5 2-7 2 7 5-5 2 9z"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M4 20h16"
+}));
+const SwordIcon = p => /*#__PURE__*/React.createElement(Icon, p, /*#__PURE__*/React.createElement("path", {
+  d: "M5 19l6-6"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M9 9l7-7 4 4-7 7"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M13 13l4 4-2 2-4-4"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M5 19l-2 2"
+}));
+const ShieldIcon = p => /*#__PURE__*/React.createElement(Icon, p, /*#__PURE__*/React.createElement("path", {
+  d: "M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"
+}));
+const DropletIcon = p => /*#__PURE__*/React.createElement(Icon, p, /*#__PURE__*/React.createElement("path", {
+  d: "M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"
+}));
+const GhostIcon = p => /*#__PURE__*/React.createElement(Icon, p, /*#__PURE__*/React.createElement("path", {
+  d: "M5 20V11a7 7 0 0 1 14 0v9l-2-2-2 2-2-2-2 2-2-2z"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "9.5",
+  cy: "10.5",
+  r: "0.8",
+  fill: p.color || "currentColor"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "14.5",
+  cy: "10.5",
+  r: "0.8",
+  fill: p.color || "currentColor"
+}));
+const CoinsIcon = p => /*#__PURE__*/React.createElement(Icon, p, /*#__PURE__*/React.createElement("circle", {
+  cx: "9",
+  cy: "9",
+  r: "6"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M14.5 5.5A6 6 0 1 1 9 15"
+}));
+const ChevronUpIcon = p => /*#__PURE__*/React.createElement(Icon, p, /*#__PURE__*/React.createElement("path", {
+  d: "M6 15l6-6 6 6"
+}));
+const ChevronDownIcon = p => /*#__PURE__*/React.createElement(Icon, p, /*#__PURE__*/React.createElement("path", {
+  d: "M6 9l6 6 6-6"
+}));
 
 /* ============ カード定義 ============ */
 const SUITS = ["slime", "crown", "sword", "shield"];
 const SUIT_META = {
-  slime:  { icon: DropletIcon, color: "#4a90d9", label: "スライム" },
-  crown:  { icon: CrownIcon,   color: "#d94a4a", label: "王冠" },
-  sword:  { icon: SwordIcon,   color: "#e0b93e", label: "剣" },
-  shield: { icon: ShieldIcon,  color: "#4aa363", label: "盾" },
+  slime: {
+    icon: DropletIcon,
+    color: "#4a90d9",
+    label: "スライム"
+  },
+  crown: {
+    icon: CrownIcon,
+    color: "#d94a4a",
+    label: "王冠"
+  },
+  sword: {
+    icon: SwordIcon,
+    color: "#e0b93e",
+    label: "剣"
+  },
+  shield: {
+    icon: ShieldIcon,
+    color: "#4aa363",
+    label: "盾"
+  }
 };
-const RANK_LABEL = { 11: "J", 12: "Q", 13: "K", 14: "A" };
-const rankLabel = (r) => RANK_LABEL[r] || String(r);
-
+const RANK_LABEL = {
+  11: "J",
+  12: "Q",
+  13: "K",
+  14: "A"
+};
+const rankLabel = r => RANK_LABEL[r] || String(r);
 function buildDeck() {
   const deck = [];
   for (const s of SUITS) {
-    for (let r = 2; r <= 14; r++) deck.push({ suit: s, rank: r, joker: false });
+    for (let r = 2; r <= 14; r++) deck.push({
+      suit: s,
+      rank: r,
+      joker: false
+    });
   }
-  deck.push({ suit: null, rank: null, joker: true });
+  deck.push({
+    suit: null,
+    rank: null,
+    joker: true
+  });
   return deck;
 }
 function shuffle(arr) {
@@ -63,76 +213,95 @@ function shuffle(arr) {
 }
 
 /* ============ 役判定 ============ */
-const HANDS = [
-  { key: "rss",   label: "ロイヤルストレートスライム", mult: 500 },
-  { key: "rsf",   label: "ロイヤルストレートフラッシュ", mult: 100 },
-  { key: "five",  label: "ファイブカード", mult: 50 },
-  { key: "sf",    label: "ストレートフラッシュ", mult: 20 },
-  { key: "four",  label: "フォーカード", mult: 10 },
-  { key: "full",  label: "フルハウス", mult: 5 },
-  { key: "flush", label: "フラッシュ", mult: 4 },
-  { key: "straight", label: "ストレート", mult: 3 },
-  { key: "three", label: "スリーカード", mult: 1 },
-  { key: "two",   label: "ツーペア", mult: 1 },
-  { key: "none",  label: "役なし", mult: 0 },
-];
-const handInfo = (key) => HANDS.find((h) => h.key === key);
-
+const HANDS = [{
+  key: "rss",
+  label: "ロイヤルストレートスライム",
+  mult: 500
+}, {
+  key: "rsf",
+  label: "ロイヤルストレートフラッシュ",
+  mult: 100
+}, {
+  key: "five",
+  label: "ファイブカード",
+  mult: 50
+}, {
+  key: "sf",
+  label: "ストレートフラッシュ",
+  mult: 20
+}, {
+  key: "four",
+  label: "フォーカード",
+  mult: 10
+}, {
+  key: "full",
+  label: "フルハウス",
+  mult: 5
+}, {
+  key: "flush",
+  label: "フラッシュ",
+  mult: 4
+}, {
+  key: "straight",
+  label: "ストレート",
+  mult: 3
+}, {
+  key: "three",
+  label: "スリーカード",
+  mult: 1
+}, {
+  key: "two",
+  label: "ツーペア",
+  mult: 1
+}, {
+  key: "none",
+  label: "役なし",
+  mult: 0
+}];
+const handInfo = key => HANDS.find(h => h.key === key);
 function evaluateHand(cards) {
-  const real = cards.filter((c) => !c.joker);
-  const hasJoker = cards.some((c) => c.joker);
+  const real = cards.filter(c => !c.joker);
+  const hasJoker = cards.some(c => c.joker);
   const jokerCount = hasJoker ? 1 : 0;
-
-  const ranks = real.map((c) => c.rank).sort((a, b) => a - b);
-  const suits = real.map((c) => c.suit);
+  const ranks = real.map(c => c.rank).sort((a, b) => a - b);
+  const suits = real.map(c => c.suit);
   const distinctRanks = [...new Set(ranks)];
-  const allSameSuit = suits.length > 0 && suits.every((s) => s === suits[0]);
+  const allSameSuit = suits.length > 0 && suits.every(s => s === suits[0]);
   const commonSuit = allSameSuit ? suits[0] : null;
-
   const flushPossible = allSameSuit || real.length === 0;
-
   let straightPossible = false;
   if (jokerCount === 0) {
-    straightPossible =
-      distinctRanks.length === 5 && distinctRanks[4] - distinctRanks[0] === 4;
+    straightPossible = distinctRanks.length === 5 && distinctRanks[4] - distinctRanks[0] === 4;
   } else if (jokerCount === 1) {
     if (distinctRanks.length === 4) {
       const span = distinctRanks[3] - distinctRanks[0];
-      if (span === 3) straightPossible = true;
-      else if (span === 4) {
+      if (span === 3) straightPossible = true;else if (span === 4) {
         let gapCount = 0;
         for (let i = 0; i < 3; i++) {
           const diff = distinctRanks[i + 1] - distinctRanks[i];
-          if (diff === 2) gapCount++;
-          else if (diff !== 1) gapCount = 99;
+          if (diff === 2) gapCount++;else if (diff !== 1) gapCount = 99;
         }
         straightPossible = gapCount === 1;
       }
     }
   }
-
   const isRoyalRanks = (() => {
     const royal = [10, 11, 12, 13, 14];
     if (distinctRanks.length < 4) return false;
-    const missing = royal.filter((r) => !distinctRanks.includes(r));
-    return missing.length <= jokerCount && distinctRanks.every((r) => royal.includes(r));
+    const missing = royal.filter(r => !distinctRanks.includes(r));
+    return missing.length <= jokerCount && distinctRanks.every(r => royal.includes(r));
   })();
-
   const countMap = {};
   for (const r of ranks) countMap[r] = (countMap[r] || 0) + 1;
   const counts = Object.values(countMap).sort((a, b) => b - a);
   const effCounts = counts.length ? [...counts] : [];
   if (jokerCount > 0) {
-    if (effCounts.length === 0) effCounts.push(jokerCount);
-    else effCounts[0] += jokerCount;
+    if (effCounts.length === 0) effCounts.push(jokerCount);else effCounts[0] += jokerCount;
   }
-
   const candidates = [];
-
   if (straightPossible && flushPossible) {
     if (isRoyalRanks) {
-      if (commonSuit === "slime" && jokerCount === 0) candidates.push("rss");
-      else candidates.push("rsf");
+      if (commonSuit === "slime" && jokerCount === 0) candidates.push("rss");else candidates.push("rsf");
     } else {
       candidates.push("sf");
     }
@@ -145,82 +314,95 @@ function evaluateHand(cards) {
   if (straightPossible && !flushPossible) candidates.push("straight");
   if (effCounts[0] === 3) candidates.push("three");
   if (effCounts[0] === 2 && effCounts[1] === 2) candidates.push("two");
-
   candidates.push("none");
   candidates.sort((a, b) => handInfo(a).mult - handInfo(b).mult);
   return candidates[candidates.length - 1];
 }
 
 /* ============ DQ風UIパーツ ============ */
-function DQBox({ children, className = "" }) {
-  return (
-    <div
-      className={`relative ${className}`}
-      style={{
-        background: "linear-gradient(180deg,#1c2f7a 0%,#12205c 100%)",
-        border: "3px solid #f4f0e0",
-        boxShadow: "0 0 0 2px #12205c, 0 4px 12px rgba(0,0,0,0.5)",
-        borderRadius: "2px",
-        padding: "14px 18px",
-        color: "#f4f0e0",
-        fontFamily: "'Courier New', monospace",
-      }}
-    >
-      {children}
-    </div>
-  );
+function DQBox({
+  children,
+  className = ""
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: `relative ${className}`,
+    style: {
+      background: "linear-gradient(180deg,#1c2f7a 0%,#12205c 100%)",
+      border: "3px solid #f4f0e0",
+      boxShadow: "0 0 0 2px #12205c, 0 4px 12px rgba(0,0,0,0.5)",
+      borderRadius: "2px",
+      padding: "14px 18px",
+      color: "#f4f0e0",
+      fontFamily: "'Courier New', monospace"
+    }
+  }, children);
 }
-
 function Cursor() {
-  return <span className="inline-block animate-pulse mr-1" style={{ color: "#e0b93e" }}>▶</span>;
+  return /*#__PURE__*/React.createElement("span", {
+    className: "inline-block animate-pulse mr-1",
+    style: {
+      color: "#e0b93e"
+    }
+  }, "\u25B6");
 }
-
-function CardView({ card, held, onToggle, dim }) {
-  if (!card) return <div className="w-16 h-24 md:w-20 md:h-28" />;
+function CardView({
+  card,
+  held,
+  onToggle,
+  dim
+}) {
+  if (!card) return /*#__PURE__*/React.createElement("div", {
+    className: "w-16 h-24 md:w-20 md:h-28"
+  });
   if (card.joker) {
-    return (
-      <button
-        onClick={onToggle}
-        className="w-16 h-24 md:w-20 md:h-28 rounded-md flex flex-col items-center justify-center relative transition-transform"
-        style={{
-          background: "linear-gradient(160deg,#3a1c5c,#1c1030)",
-          border: held ? "3px solid #e0b93e" : "3px solid #6b5a8f",
-          opacity: dim ? 0.5 : 1,
-          transform: held ? "translateY(-6px)" : "none",
-        }}
-      >
-        <GhostIcon size={28} color="#c99bf0" />
-        <span className="text-[10px] mt-1" style={{ color: "#c99bf0" }}>JOKER</span>
-        {held && <span className="absolute -top-3 text-[10px] text-yellow-300">HOLD</span>}
-      </button>
-    );
+    return /*#__PURE__*/React.createElement("button", {
+      onClick: onToggle,
+      className: "w-16 h-24 md:w-20 md:h-28 rounded-md flex flex-col items-center justify-center relative transition-transform",
+      style: {
+        background: "linear-gradient(160deg,#3a1c5c,#1c1030)",
+        border: held ? "3px solid #e0b93e" : "3px solid #6b5a8f",
+        opacity: dim ? 0.5 : 1,
+        transform: held ? "translateY(-6px)" : "none"
+      }
+    }, /*#__PURE__*/React.createElement(GhostIcon, {
+      size: 28,
+      color: "#c99bf0"
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "text-[10px] mt-1",
+      style: {
+        color: "#c99bf0"
+      }
+    }, "JOKER"), held && /*#__PURE__*/React.createElement("span", {
+      className: "absolute -top-3 text-[10px] text-yellow-300"
+    }, "HOLD"));
   }
   const meta = SUIT_META[card.suit];
   const IconComp = meta.icon;
-  return (
-    <button
-      onClick={onToggle}
-      className="w-16 h-24 md:w-20 md:h-28 rounded-md flex flex-col items-center justify-center relative transition-transform bg-[#f4f0e0]"
-      style={{
-        border: held ? "3px solid #e0b93e" : "3px solid #8a8060",
-        opacity: dim ? 0.5 : 1,
-        transform: held ? "translateY(-6px)" : "none",
-      }}
-    >
-      <span className="text-lg md:text-xl font-bold" style={{ color: meta.color }}>
-        {rankLabel(card.rank)}
-      </span>
-      <IconComp size={20} color={meta.color} />
-      {held && <span className="absolute -top-3 text-[10px] text-yellow-600 font-bold">HOLD</span>}
-    </button>
-  );
+  return /*#__PURE__*/React.createElement("button", {
+    onClick: onToggle,
+    className: "w-16 h-24 md:w-20 md:h-28 rounded-md flex flex-col items-center justify-center relative transition-transform bg-[#f4f0e0]",
+    style: {
+      border: held ? "3px solid #e0b93e" : "3px solid #8a8060",
+      opacity: dim ? 0.5 : 1,
+      transform: held ? "translateY(-6px)" : "none"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-lg md:text-xl font-bold",
+    style: {
+      color: meta.color
+    }
+  }, rankLabel(card.rank)), /*#__PURE__*/React.createElement(IconComp, {
+    size: 20,
+    color: meta.color
+  }), held && /*#__PURE__*/React.createElement("span", {
+    className: "absolute -top-3 text-[10px] text-yellow-600 font-bold"
+  }, "HOLD"));
 }
 
 /* ============ メインアプリ ============ */
 const BET_MAX = 1000;
 const COIN_CAP = 999999;
 const REFILL = 1000;
-
 function DQPoker() {
   const [coins, setCoins] = useState(1000);
   const [bet, setBet] = useState(10);
@@ -234,12 +416,10 @@ function DQPoker() {
   const [duCurrent, setDuCurrent] = useState(null);
   const [duBusy, setDuBusy] = useState(false);
   const [refillFlash, setRefillFlash] = useState(false);
-
-  const adjustBet = (delta) => {
-    setBet((b) => Math.min(BET_MAX, Math.max(10, Math.min(b + delta, coins))));
+  const adjustBet = delta => {
+    setBet(b => Math.min(BET_MAX, Math.max(10, Math.min(b + delta, coins))));
   };
-
-  const maybeRefill = (currentCoins) => {
+  const maybeRefill = currentCoins => {
     if (currentCoins <= 0) {
       setRefillFlash(true);
       setTimeout(() => setRefillFlash(false), 1600);
@@ -247,7 +427,6 @@ function DQPoker() {
     }
     return currentCoins;
   };
-
   const startDeal = () => {
     if (bet > coins) return;
     const d = shuffle(buildDeck());
@@ -255,16 +434,14 @@ function DQPoker() {
     setDeck(d.slice(5));
     setHand(h);
     setHeld([false, false, false, false, false]);
-    setCoins((c) => c - bet);
+    setCoins(c => c - bet);
     setPhase("deal");
     setMessage("交換したいカードを選んでね（そのままでもOK）");
     setResultKey(null);
   };
-
-  const toggleHold = (i) => {
-    setHeld((h) => h.map((v, idx) => (idx === i ? !v : v)));
+  const toggleHold = i => {
+    setHeld(h => h.map((v, idx) => idx === i ? !v : v));
   };
-
   const doExchange = () => {
     const newHand = [...hand];
     let d = [...deck];
@@ -287,22 +464,19 @@ function DQPoker() {
     }
     setPhase("result");
   };
-
   const collect = () => {
-    setCoins((c) => maybeRefill(Math.min(COIN_CAP, c + winnings)));
+    setCoins(c => maybeRefill(Math.min(COIN_CAP, c + winnings)));
     setPhase("bet");
     setWinnings(0);
     setMessage("つぎはどれくらい賭ける？");
   };
-
   const goDoubleUp = () => {
     const card = 2 + Math.floor(Math.random() * 13);
     setDuCurrent(card);
     setPhase("doubleup");
     setMessage(`今のカードは「${rankLabel(card)}」。次はもっと高い？低い？`);
   };
-
-  const pickHighLow = (choice) => {
+  const pickHighLow = choice => {
     if (duBusy) return;
     setDuBusy(true);
     const next = 2 + Math.floor(Math.random() * 13);
@@ -313,7 +487,7 @@ function DQPoker() {
         return;
       }
       const isHigher = next > duCurrent;
-      const correct = (choice === "high" && isHigher) || (choice === "low" && !isHigher);
+      const correct = choice === "high" && isHigher || choice === "low" && !isHigher;
       if (correct) {
         const newWin = Math.min(winnings * 2, COIN_CAP);
         setWinnings(newWin);
@@ -327,198 +501,212 @@ function DQPoker() {
       setDuBusy(false);
     }, 500);
   };
-
-  const finishDoubleUp = (cashOut) => {
+  const finishDoubleUp = cashOut => {
     if (cashOut) {
-      setCoins((c) => maybeRefill(Math.min(COIN_CAP, c + winnings)));
+      setCoins(c => maybeRefill(Math.min(COIN_CAP, c + winnings)));
       setMessage("コインを回収した！つぎはどれくらい賭ける？");
     }
     setWinnings(0);
     setPhase("bet");
   };
-
   const acknowledgeBust = () => {
-    setCoins((c) => maybeRefill(c));
+    setCoins(c => maybeRefill(c));
     setPhase("bet");
     setMessage("つぎはどれくらい賭ける？");
   };
-
-  return (
-    <div
-      className="min-h-screen w-full flex items-center justify-center p-4"
-      style={{
-        background: "radial-gradient(ellipse at top, #1a2050 0%, #05061a 70%)",
-        fontFamily: "'Courier New', monospace",
-      }}
-    >
-      <div className="w-full max-w-xl">
-        <h1
-          className="text-center text-2xl md:text-3xl font-bold mb-4 tracking-wider"
-          style={{ color: "#f4d97e", textShadow: "2px 2px 0 #6b3a1a" }}
-        >
-          ★ カジノポーカー ★
-        </h1>
-
-        <div className="flex justify-center mb-4">
-          <DQBox className="flex items-center gap-2">
-            <CoinsIcon size={20} color="#f4d97e" />
-            <span className="font-bold text-lg">{coins.toLocaleString()}</span>
-            <span className="text-sm opacity-80">枚</span>
-          </DQBox>
-        </div>
-
-        {refillFlash && (
-          <div className="text-center mb-2 text-yellow-300 text-sm animate-pulse">
-            所持金が尽きたため {REFILL}枚 補充された！
-          </div>
-        )}
-
-        <DQBox className="mb-4 min-h-[70px] flex items-center">
-          <p className="text-sm md:text-base leading-relaxed">
-            <Cursor />
-            {message}
-          </p>
-        </DQBox>
-
-        {(phase === "deal" || phase === "result") && (
-          <div className="flex justify-center gap-2 mb-4 flex-wrap">
-            {hand.map((c, i) => (
-              <CardView
-                key={i}
-                card={c}
-                held={held[i]}
-                dim={false}
-                onToggle={() => phase === "deal" && toggleHold(i)}
-              />
-            ))}
-          </div>
-        )}
-
-        {(phase === "doubleup" || phase === "doneDouble") && (
-          <div className="flex flex-col items-center mb-4">
-            <div className="flex items-center gap-3 mb-2">
-              <div
-                className="w-20 h-28 rounded-md flex items-center justify-center border-4"
-                style={{ background: "#12205c", borderColor: "#e0b93e" }}
-              >
-                <span className="text-3xl font-bold" style={{ color: "#ffffff" }}>
-                  {duCurrent ? rankLabel(duCurrent) : "?"}
-                </span>
-              </div>
-              <span className="text-2xl" style={{ color: "#f4d97e" }}>→</span>
-              <div className="w-20 h-28 rounded-md flex items-center justify-center bg-[#2a2a4a] border-4 border-dashed border-[#6b5a8f]">
-                <span className="text-2xl" style={{ color: "#8a8ac0" }}>?</span>
-              </div>
-            </div>
-            <span className="text-yellow-300 font-bold">獲得予定：{winnings.toLocaleString()}枚</span>
-          </div>
-        )}
-
-        <DQBox>
-          {phase === "bet" && (
-            <div>
-              <div className="flex items-center justify-center gap-3 mb-3">
-                <button onClick={() => adjustBet(-100)} className="px-2 py-1 border border-[#f4f0e0] rounded hover:bg-white/10 flex items-center">
-                  <ChevronDownIcon size={16} />100
-                </button>
-                <button onClick={() => adjustBet(-10)} className="px-2 py-1 border border-[#f4f0e0] rounded hover:bg-white/10 flex items-center">
-                  <ChevronDownIcon size={16} />10
-                </button>
-                <div className="px-4 py-1 font-bold text-lg min-w-[90px] text-center" style={{ color: "#f4d97e" }}>
-                  {bet}枚
-                </div>
-                <button onClick={() => adjustBet(10)} className="px-2 py-1 border border-[#f4f0e0] rounded hover:bg-white/10 flex items-center">
-                  <ChevronUpIcon size={16} />10
-                </button>
-                <button onClick={() => adjustBet(100)} className="px-2 py-1 border border-[#f4f0e0] rounded hover:bg-white/10 flex items-center">
-                  <ChevronUpIcon size={16} />100
-                </button>
-              </div>
-              <div className="text-center">
-                <button
-                  onClick={startDeal}
-                  disabled={bet > coins}
-                  className="px-6 py-2 font-bold rounded disabled:opacity-40"
-                  style={{ background: "#e0b93e", color: "#12205c" }}
-                >
-                  <Cursor />賭ける
-                </button>
-              </div>
-            </div>
-          )}
-
-          {phase === "deal" && (
-            <div className="text-center">
-              <button onClick={doExchange} className="px-6 py-2 font-bold rounded" style={{ background: "#e0b93e", color: "#12205c" }}>
-                <Cursor />チェンジする
-              </button>
-            </div>
-          )}
-
-          {phase === "result" && (
-            <div className="text-center flex justify-center gap-3 flex-wrap">
-              {winnings > 0 ? (
-                <>
-                  <button onClick={goDoubleUp} className="px-5 py-2 font-bold rounded" style={{ background: "#4a90d9", color: "#12205c" }}>
-                    <Cursor />ダブルアップ
-                  </button>
-                  <button onClick={collect} className="px-5 py-2 font-bold rounded" style={{ background: "#e0b93e", color: "#12205c" }}>
-                    <Cursor />やめておく
-                  </button>
-                </>
-              ) : (
-                <button onClick={acknowledgeBust} className="px-5 py-2 font-bold rounded" style={{ background: "#e0b93e", color: "#12205c" }}>
-                  <Cursor />つぎへ
-                </button>
-              )}
-            </div>
-          )}
-
-          {phase === "doubleup" && (
-            <div className="text-center flex justify-center gap-3">
-              <button onClick={() => pickHighLow("high")} disabled={duBusy} className="px-5 py-2 font-bold rounded disabled:opacity-40" style={{ background: "#d94a4a", color: "#f4f0e0" }}>
-                <Cursor />高い
-              </button>
-              <button onClick={() => pickHighLow("low")} disabled={duBusy} className="px-5 py-2 font-bold rounded disabled:opacity-40" style={{ background: "#4a90d9", color: "#f4f0e0" }}>
-                <Cursor />低い
-              </button>
-              {winnings > 0 && !duBusy && (
-                <button onClick={() => finishDoubleUp(true)} className="px-5 py-2 font-bold rounded" style={{ background: "#e0b93e", color: "#12205c" }}>
-                  <Cursor />やめる
-                </button>
-              )}
-            </div>
-          )}
-
-          {phase === "doneDouble" && (
-            <div className="text-center">
-              <button onClick={() => finishDoubleUp(false)} className="px-5 py-2 font-bold rounded" style={{ background: "#e0b93e", color: "#12205c" }}>
-                <Cursor />つぎへ
-              </button>
-            </div>
-          )}
-        </DQBox>
-
-        <details className="mt-4">
-          <summary className="text-center text-xs cursor-pointer" style={{ color: "#8a8ac0" }}>役一覧を見る</summary>
-          <DQBox className="mt-2 text-xs">
-            <ul className="grid grid-cols-2 gap-x-4 gap-y-1">
-              {HANDS.filter((h) => h.key !== "none").map((h) => (
-                <li key={h.key} className="flex justify-between">
-                  <span>{h.label}</span>
-                  <span style={{ color: "#f4d97e" }}>{h.mult}倍</span>
-                </li>
-              ))}
-            </ul>
-          </DQBox>
-        </details>
-      </div>
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    className: "min-h-screen w-full flex items-center justify-center p-4",
+    style: {
+      background: "radial-gradient(ellipse at top, #1a2050 0%, #05061a 70%)",
+      fontFamily: "'Courier New', monospace"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-full max-w-xl"
+  }, /*#__PURE__*/React.createElement("h1", {
+    className: "text-center text-2xl md:text-3xl font-bold mb-4 tracking-wider",
+    style: {
+      color: "#f4d97e",
+      textShadow: "2px 2px 0 #6b3a1a"
+    }
+  }, "\u2605 \u30AB\u30B8\u30CE\u30DD\u30FC\u30AB\u30FC \u2605"), /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-center mb-4"
+  }, /*#__PURE__*/React.createElement(DQBox, {
+    className: "flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement(CoinsIcon, {
+    size: 20,
+    color: "#f4d97e"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "font-bold text-lg"
+  }, coins.toLocaleString()), /*#__PURE__*/React.createElement("span", {
+    className: "text-sm opacity-80"
+  }, "\u679A"))), refillFlash && /*#__PURE__*/React.createElement("div", {
+    className: "text-center mb-2 text-yellow-300 text-sm animate-pulse"
+  }, "\u6240\u6301\u91D1\u304C\u5C3D\u304D\u305F\u305F\u3081 ", REFILL, "\u679A \u88DC\u5145\u3055\u308C\u305F\uFF01"), /*#__PURE__*/React.createElement(DQBox, {
+    className: "mb-4 min-h-[70px] flex items-center"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-sm md:text-base leading-relaxed"
+  }, /*#__PURE__*/React.createElement(Cursor, null), message)), (phase === "deal" || phase === "result") && /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-center gap-2 mb-4 flex-wrap"
+  }, hand.map((c, i) => /*#__PURE__*/React.createElement(CardView, {
+    key: i,
+    card: c,
+    held: held[i],
+    dim: false,
+    onToggle: () => phase === "deal" && toggleHold(i)
+  }))), (phase === "doubleup" || phase === "doneDouble") && /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col items-center mb-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-3 mb-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-20 h-28 rounded-md flex items-center justify-center border-4",
+    style: {
+      background: "#12205c",
+      borderColor: "#e0b93e"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-3xl font-bold",
+    style: {
+      color: "#ffffff"
+    }
+  }, duCurrent ? rankLabel(duCurrent) : "?")), /*#__PURE__*/React.createElement("span", {
+    className: "text-2xl",
+    style: {
+      color: "#f4d97e"
+    }
+  }, "\u2192"), /*#__PURE__*/React.createElement("div", {
+    className: "w-20 h-28 rounded-md flex items-center justify-center bg-[#2a2a4a] border-4 border-dashed border-[#6b5a8f]"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-2xl",
+    style: {
+      color: "#8a8ac0"
+    }
+  }, "?"))), /*#__PURE__*/React.createElement("span", {
+    className: "text-yellow-300 font-bold"
+  }, "\u7372\u5F97\u4E88\u5B9A\uFF1A", winnings.toLocaleString(), "\u679A")), /*#__PURE__*/React.createElement(DQBox, null, phase === "bet" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-center gap-3 mb-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => adjustBet(-100),
+    className: "px-2 py-1 border border-[#f4f0e0] rounded hover:bg-white/10 flex items-center"
+  }, /*#__PURE__*/React.createElement(ChevronDownIcon, {
+    size: 16
+  }), "100"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => adjustBet(-10),
+    className: "px-2 py-1 border border-[#f4f0e0] rounded hover:bg-white/10 flex items-center"
+  }, /*#__PURE__*/React.createElement(ChevronDownIcon, {
+    size: 16
+  }), "10"), /*#__PURE__*/React.createElement("div", {
+    className: "px-4 py-1 font-bold text-lg min-w-[90px] text-center",
+    style: {
+      color: "#f4d97e"
+    }
+  }, bet, "\u679A"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => adjustBet(10),
+    className: "px-2 py-1 border border-[#f4f0e0] rounded hover:bg-white/10 flex items-center"
+  }, /*#__PURE__*/React.createElement(ChevronUpIcon, {
+    size: 16
+  }), "10"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => adjustBet(100),
+    className: "px-2 py-1 border border-[#f4f0e0] rounded hover:bg-white/10 flex items-center"
+  }, /*#__PURE__*/React.createElement(ChevronUpIcon, {
+    size: 16
+  }), "100")), /*#__PURE__*/React.createElement("div", {
+    className: "text-center"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: startDeal,
+    disabled: bet > coins,
+    className: "px-6 py-2 font-bold rounded disabled:opacity-40",
+    style: {
+      background: "#e0b93e",
+      color: "#12205c"
+    }
+  }, /*#__PURE__*/React.createElement(Cursor, null), "\u8CED\u3051\u308B"))), phase === "deal" && /*#__PURE__*/React.createElement("div", {
+    className: "text-center"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: doExchange,
+    className: "px-6 py-2 font-bold rounded",
+    style: {
+      background: "#e0b93e",
+      color: "#12205c"
+    }
+  }, /*#__PURE__*/React.createElement(Cursor, null), "\u30C1\u30A7\u30F3\u30B8\u3059\u308B")), phase === "result" && /*#__PURE__*/React.createElement("div", {
+    className: "text-center flex justify-center gap-3 flex-wrap"
+  }, winnings > 0 ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+    onClick: goDoubleUp,
+    className: "px-5 py-2 font-bold rounded",
+    style: {
+      background: "#4a90d9",
+      color: "#12205c"
+    }
+  }, /*#__PURE__*/React.createElement(Cursor, null), "\u30C0\u30D6\u30EB\u30A2\u30C3\u30D7"), /*#__PURE__*/React.createElement("button", {
+    onClick: collect,
+    className: "px-5 py-2 font-bold rounded",
+    style: {
+      background: "#e0b93e",
+      color: "#12205c"
+    }
+  }, /*#__PURE__*/React.createElement(Cursor, null), "\u3084\u3081\u3066\u304A\u304F")) : /*#__PURE__*/React.createElement("button", {
+    onClick: acknowledgeBust,
+    className: "px-5 py-2 font-bold rounded",
+    style: {
+      background: "#e0b93e",
+      color: "#12205c"
+    }
+  }, /*#__PURE__*/React.createElement(Cursor, null), "\u3064\u304E\u3078")), phase === "doubleup" && /*#__PURE__*/React.createElement("div", {
+    className: "text-center flex justify-center gap-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => pickHighLow("high"),
+    disabled: duBusy,
+    className: "px-5 py-2 font-bold rounded disabled:opacity-40",
+    style: {
+      background: "#d94a4a",
+      color: "#f4f0e0"
+    }
+  }, /*#__PURE__*/React.createElement(Cursor, null), "\u9AD8\u3044"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => pickHighLow("low"),
+    disabled: duBusy,
+    className: "px-5 py-2 font-bold rounded disabled:opacity-40",
+    style: {
+      background: "#4a90d9",
+      color: "#f4f0e0"
+    }
+  }, /*#__PURE__*/React.createElement(Cursor, null), "\u4F4E\u3044"), winnings > 0 && !duBusy && /*#__PURE__*/React.createElement("button", {
+    onClick: () => finishDoubleUp(true),
+    className: "px-5 py-2 font-bold rounded",
+    style: {
+      background: "#e0b93e",
+      color: "#12205c"
+    }
+  }, /*#__PURE__*/React.createElement(Cursor, null), "\u3084\u3081\u308B")), phase === "doneDouble" && /*#__PURE__*/React.createElement("div", {
+    className: "text-center"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => finishDoubleUp(false),
+    className: "px-5 py-2 font-bold rounded",
+    style: {
+      background: "#e0b93e",
+      color: "#12205c"
+    }
+  }, /*#__PURE__*/React.createElement(Cursor, null), "\u3064\u304E\u3078"))), /*#__PURE__*/React.createElement("details", {
+    className: "mt-4"
+  }, /*#__PURE__*/React.createElement("summary", {
+    className: "text-center text-xs cursor-pointer",
+    style: {
+      color: "#8a8ac0"
+    }
+  }, "\u5F79\u4E00\u89A7\u3092\u898B\u308B"), /*#__PURE__*/React.createElement(DQBox, {
+    className: "mt-2 text-xs"
+  }, /*#__PURE__*/React.createElement("ul", {
+    className: "grid grid-cols-2 gap-x-4 gap-y-1"
+  }, HANDS.filter(h => h.key !== "none").map(h => /*#__PURE__*/React.createElement("li", {
+    key: h.key,
+    className: "flex justify-between"
+  }, /*#__PURE__*/React.createElement("span", null, h.label), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "#f4d97e"
+    }
+  }, h.mult, "\u500D"))))))));
 }
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<DQPoker />);
+root.render(/*#__PURE__*/React.createElement(DQPoker, null));
 </script>
 </body>
 </html>
