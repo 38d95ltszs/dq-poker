@@ -524,7 +524,7 @@ function DQPoker() {
     setHeld([false, false, false, false, false]);
     setCoins(c => c - bet);
     setPhase("deal");
-    setMessage("交換したいカードを選んでね（そのままでもOK）");
+    setMessage("チェンジかホールドか選んでください");
     setResultKey(null);
   };
   const toggleHold = i => {
@@ -548,7 +548,7 @@ function DQPoker() {
     if (win > 0) {
       setMessage(`「${info.label}」！ ${info.mult}倍の${win}枚を獲得！`);
     } else {
-      setMessage("役なし……残念、コインは没収された。");
+      setMessage("ざんねんでした");
     }
     setPhase("result");
   };
@@ -556,7 +556,7 @@ function DQPoker() {
     setCoins(c => maybeRefill(Math.min(COIN_CAP, c + winnings)));
     setPhase("bet");
     setWinnings(0);
-    setMessage("つぎはどれくらい賭ける？");
+    setMessage("ベットしてください");
   };
   const goDoubleUp = () => {
     const card = 2 + Math.floor(Math.random() * 13);
@@ -592,7 +592,7 @@ function DQPoker() {
   const finishDoubleUp = cashOut => {
     if (cashOut) {
       setCoins(c => maybeRefill(Math.min(COIN_CAP, c + winnings)));
-      setMessage("コインを回収した！つぎはどれくらい賭ける？");
+      setMessage("おめでとうございました！ またベットしますか？");
     }
     setWinnings(0);
     setPhase("bet");
@@ -600,7 +600,7 @@ function DQPoker() {
   const acknowledgeBust = () => {
     setCoins(c => maybeRefill(c));
     setPhase("bet");
-    setMessage("つぎはどれくらい賭ける？");
+    setMessage("ベットしてください");
   };
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "min-h-screen w-full flex justify-center p-4",
@@ -719,7 +719,7 @@ function DQPoker() {
       background: "#e0b93e",
       color: "#12205c"
     }
-  }, /*#__PURE__*/React.createElement(Cursor, null), "\u8CED\u3051\u308B"))), phase === "deal" && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Cursor, null), "\u30B9\u30BF\u30FC\u30C8"))), phase === "deal" && /*#__PURE__*/React.createElement("div", {
     className: "text-center"
   }, /*#__PURE__*/React.createElement("button", {
     onClick: doExchange,
@@ -728,7 +728,7 @@ function DQPoker() {
       background: "#e0b93e",
       color: "#12205c"
     }
-  }, /*#__PURE__*/React.createElement(Cursor, null), "\u30C1\u30A7\u30F3\u30B8\u3059\u308B")), phase === "result" && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Cursor, null), "\u30C1\u30A7\u30F3\u30B8")), phase === "result" && /*#__PURE__*/React.createElement("div", {
     className: "text-center flex justify-center gap-3 flex-wrap"
   }, winnings > 0 ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
     onClick: goDoubleUp,
@@ -751,7 +751,7 @@ function DQPoker() {
       background: "#e0b93e",
       color: "#12205c"
     }
-  }, /*#__PURE__*/React.createElement(Cursor, null), "\u3064\u304E\u3078")), phase === "doubleup" && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(Cursor, null), "\u3082\u3046\u4E00\u5EA6")), phase === "doubleup" && /*#__PURE__*/React.createElement("div", {
     className: "text-center flex justify-center gap-3"
   }, /*#__PURE__*/React.createElement("button", {
     onClick: () => pickHighLow("high"),
@@ -785,7 +785,7 @@ function DQPoker() {
       background: "#e0b93e",
       color: "#12205c"
     }
-  }, /*#__PURE__*/React.createElement(Cursor, null), "\u3064\u304E\u3078"))), /*#__PURE__*/React.createElement("details", {
+  }, /*#__PURE__*/React.createElement(Cursor, null), "\u3082\u3046\u4E00\u5EA6"))), /*#__PURE__*/React.createElement("details", {
     className: "mt-2"
   }, /*#__PURE__*/React.createElement("summary", {
     className: "text-center text-xs cursor-pointer",
